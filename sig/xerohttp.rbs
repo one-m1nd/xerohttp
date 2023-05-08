@@ -1,4 +1,12 @@
-module Xerohttp
-  VERSION: String
-  # See the writing guide of rbs: https://github.com/ruby/rbs#guides
+# Root wrapper around httprb
+module XeroHTTP
+  extend HTTP::Chainable
+
+  # sord warn - class is probably not a type, but using anyway
+  # Adds header name to filter
+  # 
+  # _@param_ `filter` — header name to filter, can be regex in form of string
+  # 
+  # _@note_ — You MUST use filtered_logging feature for this to work
+  def self.add_filter: (String filter) -> class[XeroHTTP]
 end

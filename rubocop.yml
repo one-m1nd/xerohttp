@@ -1,0 +1,62 @@
+RedundantBegin:
+  Enabled: true
+
+Metrics/LineLength:
+  Max: 130
+
+Metrics/ClassLength:
+  Max: 500
+
+Style/PreferredHashMethods:
+  Enabled: true
+
+Style/ParallelAssignment:
+  Enabled: false
+
+Metrics/AbcSize:
+  Max: 30
+
+Style/RedundantFreeze:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Metrics/ModuleLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Max: 50
+
+Style/ConditionalAssignment:
+  Enabled: false
+
+Style/SignalException:
+  Enabled: false
+
+Style/NilComparison:
+  Enabled: false
+
+Style/AccessModifierDeclarations:
+  Enabled: false
+
+Style/RedundantSelf:
+  Enabled: false
+
+Metrics/BlockLength:
+  ExcludedMethods:
+    - 'context'
+    - 'define'
+    - 'let'
+    - 'it'
+    - 'describe'
+    - 'before'
+    - 'after'
+    - 'subject'
+
+Layout/IndentationConsistency:
+    Exclude:
+      - 'spec/**/*.rb'
+AllCops:
+    Exclude:
+        - 'spec/**/*'
