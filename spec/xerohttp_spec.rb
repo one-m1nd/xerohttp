@@ -25,7 +25,7 @@ RSpec.describe XeroHTTP do
     end
   end
 
-  describe '#filtered_logging' do
+  describe '.filtered_logging' do
     before(:each) do
       stub_request(:get, url).to_return(status: 200, body: 'Ruby')
     end
@@ -75,7 +75,7 @@ RSpec.describe XeroHTTP do
     end
   end
 
-  describe '#download' do
+  describe '.download' do
     let(:dir) { Dir.mktmpdir }
     let(:file) { 'foo.bar' }
     let(:destination) { File.join(dir, file) }
@@ -108,7 +108,7 @@ RSpec.describe XeroHTTP do
     end
   end
 
-  describe '#stream' do
+  describe '.stream' do
     let(:io) { StringIO.new }
 
     before(:each) do
