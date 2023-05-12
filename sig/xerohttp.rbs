@@ -15,6 +15,9 @@ module XeroHTTP
   # _@return_ — configured with filtered logging
   def self.filtered_logging: (?Logger logger, ?filters: ::Array[Regexp]) -> ::HTTP::Client
 
+  # _@return_ — configured with raise for status feature
+  def self.raise_for_status: () -> ::HTTP::Client
+
   # _@param_ `url` — url to download
   # 
   # _@param_ `destination` — relative filepath to download to
@@ -71,6 +74,12 @@ module XeroHTTP
 
       # _@return_ — filters
       attr_reader filters: ::Array[Regexp]
+    end
+
+    # Raises exception on request/server error
+    class RaiseForStatus < HTTP::Feature
+      # _@param_ `response`
+      def wrap_response: (::HTTP::Response response) -> ::HTTP::Response
     end
   end
 end

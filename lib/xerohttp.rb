@@ -19,6 +19,11 @@ module XeroHTTP
       use(filtered_logging: { logger: logger, filters: filters })
     end
 
+    # @return [::HTTP::Client] configured with raise for status feature
+    def raise_for_status
+      use(:raise_for_status)
+    end
+
     # @param url [String] url to download
     # @param destination [String] relative filepath to download to
     # @param write_mode [String] defaults to 'wb'

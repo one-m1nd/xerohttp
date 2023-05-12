@@ -134,4 +134,42 @@ RSpec.describe XeroHTTP do
       end
     end
   end
+
+  describe '.raise_for_status' do
+    subject { XeroHTTP.raise_for_status }
+
+    context 'status: 200' do
+      before(:each) do
+        stub_request(:get, url).to_return(status: 200)
+      end
+
+      it do
+        expect(subject.get(url)).to be_instance_of(HTTP::Response)
+      end
+    end
+
+    context 'status: 4XY' do
+      before(:each) do
+        stub_request(:get, url).to_return(status: 404)
+      end
+
+      it do
+        expect do
+          subject.get(url)
+        end.to raise_error(HTTP::RequestError, /404/)
+      end
+    end
+
+    context 'status: 5XY' do
+      before(:each) do
+        stub_request(:get, url).to_return(status: 503)
+      end
+
+      it do
+        expect do
+          subject.get(url)
+        end.to raise_error(HTTP::ResponseError, /503/)
+      end
+    end
+  end
 end
