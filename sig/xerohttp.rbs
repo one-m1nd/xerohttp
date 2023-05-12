@@ -1,12 +1,76 @@
 # Root wrapper around httprb
 module XeroHTTP
   extend HTTP::Chainable
+  VERSION: untyped
 
-  # sord warn - class is probably not a type, but using anyway
-  # Adds header name to filter
+  # _@param_ `value` — user agent
   # 
-  # _@param_ `filter` — header name to filter, can be regex in form of string
+  # _@return_ — configured with user agent
+  def self.user_agent: (String value) -> ::HTTP::Client
+
+  # _@param_ `logger` — new logger instance
   # 
-  # _@note_ — You MUST use filtered_logging feature for this to work
-  def self.add_filter: (String filter) -> class[XeroHTTP]
+  # _@param_ `filters` — filters to use
+  # 
+  # _@return_ — configured with filtered logging
+  def self.filtered_logging: (?Logger logger, ?filters: ::Array[Regexp]) -> ::HTTP::Client
+
+  # _@param_ `url` — url to download
+  # 
+  # _@param_ `destination` — relative filepath to download to
+  # 
+  # _@param_ `write_mode` — defaults to 'wb'
+  def self.download: (String url, String destination, ?String write_mode) ?{ (String chunks) -> void } -> void
+
+  # sord duck - #write looks like a duck type with an equivalent RBS interface, replacing with _Writer
+  # sord duck - #close looks like a duck type, replacing with untyped
+  # _@param_ `url` — URL to download
+  # 
+  # _@param_ `io` — IO to write to, must already be open
+  def self.stream: (String url, (_Writer | untyped) io) ?{ (String chunks) -> void } -> void
+
+  # Features container module
+  module Feature
+    # Filtered logging feature for sensitive values and response bodies that don't make too much
+    # sense in logging.
+    # 
+    # @!attribute [r] filters
+    #   @return [Array<Regexp>] filters
+    class FilteredLogging < HTTP::Features::Logging
+      BODY_TOO_LONG: Integer
+      OMIT_TYPES: ::Array[String]
+      BODY_OMITTED: String
+
+      # sord duck - #debug looks like a duck type, replacing with untyped
+      # sord duck - #info looks like a duck type, replacing with untyped
+      # sord duck - #warn looks like a duck type, replacing with untyped
+      # sord duck - #error looks like a duck type, replacing with untyped
+      # sord duck - #fatal looks like a duck type, replacing with untyped
+      # sord duck - #add looks like a duck type, replacing with untyped
+      # _@param_ `logger`
+      # 
+      # _@param_ `filters` — filters
+      def initialize: (?logger: untyped, ?filters: ::Array[Regexp]) -> void
+
+      # _@param_ `request`
+      def wrap_request: (::HTTP::Request request) -> ::HTTP::Request
+
+      # _@param_ `response`
+      def wrap_response: (::HTTP::Response response) -> ::HTTP::Response
+
+      # _@param_ `headers`
+      def stringify_headers: (::Array[String] headers) -> String
+
+      # sord duck - #to_s looks like a duck type with an equivalent RBS interface, replacing with _ToS
+      # _@param_ `request`
+      def request_body_to_log: (::HTTP::Request request) -> _ToS
+
+      # sord duck - #to_s looks like a duck type with an equivalent RBS interface, replacing with _ToS
+      # _@param_ `response`
+      def response_body_to_log: (::HTTP::Response response) -> _ToS
+
+      # _@return_ — filters
+      attr_reader filters: ::Array[Regexp]
+    end
+  end
 end

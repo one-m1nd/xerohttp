@@ -23,7 +23,7 @@ module XeroHTTP
     # @param destination [String] relative filepath to download to
     # @param write_mode [String] defaults to 'wb'
     # @yieldparam [String] chunks if block passed
-    # @return [::HTTP::Response]
+    # @return [void]
     def download(url, destination, write_mode = 'wb', &per_chunk)
       terminus = File.open(destination, write_mode)
 
@@ -31,15 +31,17 @@ module XeroHTTP
     end
 
     # @param url [String] URL to download
-    # @param io [#write] IO to write to, must already be open
+    # @param io [#write, #close] IO to write to, must already be open
     # @yieldparam [String] chunks if block passed
-    # @return [::HTTP::Response]
+    # @return [void]
     def stream(url, io, &per_chunk)
       get(url).body.each do |chunk|
         io.write(chunk)
         per_chunk.call(chunk) if block_given?
         chunk.clear
       end
+    ensure
+      io.close
     end
   end
 end

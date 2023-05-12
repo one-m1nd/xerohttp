@@ -74,4 +74,64 @@ RSpec.describe XeroHTTP do
       end
     end
   end
+
+  describe '#download' do
+    let(:dir) { Dir.mktmpdir }
+    let(:file) { 'foo.bar' }
+    let(:destination) { File.join(dir, file) }
+
+    before(:each) do
+      stub_request(:get, url).to_return(status: 200, body: 'some data', headers: { 'Content-Length' => 'some data'.length })
+    end
+
+    after(:each) do
+      FileUtils.remove_dir(dir)
+    end
+
+    subject { XeroHTTP.download(url, destination) }
+
+    it do
+      subject
+
+      expect(File.read(destination)).to eql('some data')
+      expect(a_request(:get, url)).to have_been_made
+    end
+
+    context 'with block passed' do
+      it do
+        expect do |probe|
+          XeroHTTP.download(url, destination, &probe)
+        end.to yield_successive_args(instance_of(String))
+
+        expect(a_request(:get, url)).to have_been_made
+      end
+    end
+  end
+
+  describe '#stream' do
+    let(:io) { StringIO.new }
+
+    before(:each) do
+      stub_request(:get, url).to_return(status: 200, body: 'some data', headers: { 'Content-Length' => 'some data'.length })
+    end
+
+    subject { XeroHTTP.stream(url, io) }
+
+    it do
+      subject
+
+      expect(io.string).to eql('some data')
+      expect(a_request(:get, url)).to have_been_made
+    end
+
+    context 'with block passed' do
+      it do
+        expect do |probe|
+          XeroHTTP.stream(url, io, &probe)
+        end.to yield_successive_args(instance_of(String))
+
+        expect(a_request(:get, url)).to have_been_made
+      end
+    end
+  end
 end
