@@ -1,7 +1,7 @@
 # Root wrapper around httprb
 module XeroHTTP
   extend HTTP::Chainable
-  VERSION: untyped
+  VERSION: String
 
   # _@param_ `value` — user agent
   # 
