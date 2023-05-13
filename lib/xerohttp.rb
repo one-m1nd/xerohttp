@@ -19,9 +19,10 @@ module XeroHTTP
       use(filtered_logging: { logger: logger, filters: filters })
     end
 
+    # @param except [Array<Integer>] status codes to not raise on
     # @return [::HTTP::Client] configured with raise for status feature
-    def raise_for_status
-      use(:raise_for_status)
+    def raise_for_status(except: [])
+      use(raise_for_status: { except: except })
     end
 
     # @param url [String] url to download

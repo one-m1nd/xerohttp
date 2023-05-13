@@ -158,6 +158,19 @@ RSpec.describe XeroHTTP do
           subject.get(url)
         end.to raise_error(HTTP::RequestError, /404/)
       end
+
+      context 'except: [429]' do
+        subject { XeroHTTP.raise_for_status(except: [429]) }
+
+        before(:each) do
+          stub_request(:get, url).to_return(status: 429)
+        end
+
+        it do
+          expect { subject.get(url) }.to_not raise_error
+          expect(subject.get(url).status).to eql 429
+        end
+      end
     end
 
     context 'status: 5XY' do
