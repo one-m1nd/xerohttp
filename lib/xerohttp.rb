@@ -1,6 +1,7 @@
 require "http"
 
 require "xerohttp/feature"
+require "xerohttp/version"
 
 # Root wrapper around httprb
 module XeroHTTP
