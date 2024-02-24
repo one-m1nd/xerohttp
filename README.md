@@ -1,6 +1,6 @@
 # Xerohttp
 
-For fun wrapper around httprb
+For fun wrapper around [httprb](https://github.com/httprb/http/wiki)
 
 ## Filtered logging
 Filters sensitive information out of logging. Filters long body content and/or response types such as
