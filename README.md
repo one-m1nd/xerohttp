@@ -3,7 +3,8 @@
 For fun wrapper around httprb
 
 ## Filtered logging
-Filters sensitive information out of logging
+Filters sensitive information out of logging. Filters long body content and/or response types such as
+`application/octet-stream`
 ```ruby
 XeroHTTP.filtered_logging(logger, filters: [/Authorization/])
 ```
